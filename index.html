@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inventar la escucha: Aparatos y curiosidades · Ondas 1925–1939</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #0a0a0a;
+      --dark:  #111111;
+      --card:  #1a1a1a;
+      --gold:  #c9a84c;
+      --gold2: #e8c97a;
+      --text:  #e8e8e8;
+      --muted: #9a9a9a;
+      --white: #ffffff;
+      --serif: 'Georgia', 'Times New Roman', serif;
+      --sans:  'Helvetica Neue', Arial, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; scroll-snap-type: y mandatory; }
+    body { background: var(--black); color: var(--text); font-family: var(--sans); overflow-x: hidden; }
+
+    #progress-bar {
+      position: fixed; top: 0; left: 0; height: 2px; width: 0%;
+      background: var(--gold); z-index: 1000; transition: width 0.15s ease;
+    }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 900;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 32px;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.85) 0%, transparent 100%);
+      pointer-events: none;
+    }
+    .nav-brand { display: flex; align-items: center; gap: 10px; pointer-events: all; }
+    .nav-logo  { font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--muted); }
+    .nav-sep   { color: var(--gold); opacity: 0.5; }
+    .nav-title { font-size: 12px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); }
+
+    #slide-nav {
+      position: fixed; right: 24px; top: 50%; transform: translateY(-50%);
+      z-index: 800; display: flex; flex-direction: column; gap: 8px; pointer-events: all;
+    }
+    .dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.25); cursor: pointer; transition: all 0.3s ease; }
+    .dot.active { background: var(--gold); transform: scale(1.5); }
+    .dot:hover  { background: rgba(255,255,255,0.6); }
+
+    section { scroll-snap-align: start; min-height: 100vh; position: relative; display: flex; align-items: center; justify-content: center; }
+
+    /* ── HERO ── */
+    #hero { overflow: hidden; background: var(--black); }
+
+    .hero-bg {
+      position: absolute; inset: 0;
+      background-image: url('images/CABECERA.png');
+      background-size: cover; background-position: center 35%;
+      filter: brightness(0.33) saturate(0.6);
+      transform: scale(1.04); transition: transform 8s ease;
+    }
+    #hero:hover .hero-bg { transform: scale(1); }
+
+    .hero-gradient {
+      position: absolute; inset: 0;
+      background: linear-gradient(160deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.0) 40%, rgba(10,10,10,0.9) 85%, var(--black) 100%);
+    }
+
+    .hero-content { position: relative; z-index: 2; max-width: 760px; padding: 80px 48px 60px; text-align: center; }
+
+    .hero-eyebrow { font-size: 10px; letter-spacing: 0.4em; text-transform: uppercase; color: var(--gold); margin-bottom: 28px; }
+
+    .hero-title {
+      font-family: var(--serif); font-size: clamp(3rem, 7vw, 6rem);
+      font-weight: 400; line-height: 1.05; color: var(--white); margin-bottom: 32px; letter-spacing: -0.01em;
+    }
+    .hero-title em { font-style: italic; color: var(--gold2); }
+
+    .hero-subtitle {
+      font-size: 15px; line-height: 1.75; color: rgba(232,232,232,0.75);
+      max-width: 520px; margin: 0 auto 48px; font-family: var(--serif); font-style: italic;
+    }
+
+    .hero-meta { display: flex; align-items: center; justify-content: center; gap: 24px; font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--muted); }
+
+    .scroll-hint {
+      position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
+      z-index: 3; display: flex; flex-direction: column; align-items: center; gap: 8px;
+      color: var(--muted); font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase;
+      animation: fadeInUp 2s ease 1.5s both;
+    }
+    .scroll-arrow { width: 1px; height: 40px; background: linear-gradient(to bottom, transparent, var(--gold)); animation: scrollLine 2s ease-in-out infinite; }
+
+    @keyframes scrollLine {
+      0%, 100% { transform: scaleY(0.3); opacity: 0.4; transform-origin: top; }
+      50%       { transform: scaleY(1);   opacity: 1;   transform-origin: top; }
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+      to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+    }
+
+    /* ── INTRO ── */
+    #intro { background: var(--dark); justify-content: flex-start; align-items: stretch; }
+
+    .intro-inner { width: 100%; display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh; }
+
+    .intro-image-col { position: relative; overflow: hidden; }
+    .intro-image-col img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; filter: brightness(0.6) saturate(0.75); }
+    .intro-image-overlay { position: absolute; inset: 0; background: linear-gradient(to right, transparent 60%, var(--dark) 100%); }
+
+    .intro-text-col { display: flex; flex-direction: column; justify-content: center; padding: 80px 64px 80px 48px; }
+
+    .section-number { font-size: 9px; letter-spacing: 0.5em; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; opacity: 0.8; }
+    .section-label  { font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--muted); margin-bottom: 32px; border-left: 2px solid var(--gold); padding-left: 16px; }
+    .section-heading { font-family: var(--serif); font-size: clamp(1.8rem, 3vw, 2.8rem); font-weight: 400; line-height: 1.2; color: var(--white); margin-bottom: 28px; }
+    .section-body { font-family: var(--serif); font-size: 15.5px; line-height: 1.85; color: rgba(232,232,232,0.78); max-width: 520px; }
+    .section-body p + p { margin-top: 18px; }
+
+    /* ── SLIDES ── */
+    .slide { background: var(--black); overflow: hidden; flex-direction: column; }
+
+    .slide-inner { position: relative; width: 100%; min-height: 100vh; display: grid; }
+    .slide-inner.layout-a { grid-template-columns: 58% 42%; }
+    .slide-inner.layout-b { grid-template-columns: 42% 58%; }
+
+    .slide-image { position: relative; overflow: hidden; }
+    .slide-image img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; transition: transform 10s ease; }
+    .slide:hover .slide-image img { transform: scale(1.04); }
+
+    .slide-image-vignette { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.0) 50%); }
+    .layout-b .slide-image-vignette { background: linear-gradient(-135deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.0) 50%); }
+
+    .slide-text { display: flex; flex-direction: column; justify-content: center; padding: 72px 56px; background: var(--card); position: relative; }
+    .layout-b .slide-text { order: -1; background: var(--dark); }
+
+    .slide-date  { font-size: 9px; letter-spacing: 0.5em; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
+    .slide-num   { font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--muted); margin-bottom: 28px; }
+    .slide-title { font-family: var(--serif); font-size: clamp(1.4rem, 2.2vw, 2.2rem); font-weight: 400; line-height: 1.25; color: var(--white); margin-bottom: 24px; }
+    .slide-body  { font-family: var(--serif); font-size: 14.5px; line-height: 1.85; color: rgba(232,232,232,0.72); max-width: 440px; }
+    .slide-body p + p { margin-top: 14px; }
+
+    .slide-caption { margin-top: 32px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.07); }
+    .slide-caption-text { font-size: 10px; color: var(--muted); line-height: 1.5; font-style: italic; }
+
+    /* ── CODA ── */
+    #coda { background: var(--dark); border-top: 1px solid rgba(255,255,255,0.05); }
+
+    .coda-inner { text-align: center; padding: 80px 48px; max-width: 700px; margin: 0 auto; }
+    .coda-icon  { font-size: 32px; margin-bottom: 32px; opacity: 0.6; }
+    .coda-title { font-family: var(--serif); font-size: clamp(1.6rem, 3vw, 2.4rem); font-weight: 400; color: var(--white); margin-bottom: 24px; line-height: 1.2; }
+    .coda-body  { font-family: var(--serif); font-size: 15px; line-height: 1.8; color: rgba(232,232,232,0.7); margin-bottom: 40px; }
+    .coda-link { display: inline-flex; align-items: center; gap: 10px; padding: 14px 32px; border: 1px solid var(--gold); color: var(--gold); text-decoration: none; font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; transition: all 0.25s ease; }
+    .coda-link:hover { background: var(--gold); color: var(--black); }
+    .coda-link svg { width: 14px; height: 14px; }
+
+    /* ── FOOTER ── */
+    footer { background: var(--black); border-top: 1px solid rgba(255,255,255,0.05); padding: 40px 48px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 24px; }
+    .footer-left { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); line-height: 1.8; }
+    .footer-left strong { display: block; color: var(--gold); margin-bottom: 4px; letter-spacing: 0.3em; }
+    .footer-right { font-size: 10px; color: var(--muted); text-align: right; line-height: 1.8; }
+
+    /* ── REVEAL ── */
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.35s; }
+
+    .gold-line { display: block; width: 40px; height: 1px; background: var(--gold); margin: 20px 0; opacity: 0.6; }
+
+    @media (max-width: 768px) {
+      .intro-inner, .slide-inner.layout-a, .slide-inner.layout-b { grid-template-columns: 1fr; }
+      .intro-image-col { min-height: 40vh; }
+      .slide-image     { min-height: 45vh; }
+      .layout-b .slide-text { order: unset; }
+      .slide-text, .intro-text-col { padding: 48px 28px; }
+      nav { padding: 14px 20px; }
+      #slide-nav { display: none; }
+      .hero-content { padding: 80px 24px 60px; }
+      footer { flex-direction: column; }
+      .footer-right { text-align: left; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+
+<nav>
+  <div class="nav-brand">
+    <span class="nav-logo">Ondas · 1925–1939</span>
+    <span class="nav-sep">—</span>
+    <span class="nav-title">Itinerario 5</span>
+  </div>
+</nav>
+
+<div id="slide-nav">
+  <div class="dot active" data-target="hero"      title="Inicio"></div>
+  <div class="dot"        data-target="intro"     title="Inventar la escucha"></div>
+  <div class="dot"        data-target="slide-001" title="Pianorad, 1925"></div>
+  <div class="dot"        data-target="slide-002" title="Piano-impresor, 1925"></div>
+  <div class="dot"        data-target="slide-003" title="Máquina automática, 1926"></div>
+  <div class="dot"        data-target="slide-004" title="Radio-barco, 1926"></div>
+  <div class="dot"        data-target="slide-005" title="Fuente-altavoz, 1926"></div>
+  <div class="dot"        data-target="slide-006" title="El tono del violín, 1927"></div>
+  <div class="dot"        data-target="slide-007" title="Theremin, 1929"></div>
+  <div class="dot"        data-target="slide-008" title="Radio en el cochecito, 1930"></div>
+  <div class="dot"        data-target="slide-009" title="Radio en el automóvil, 1930"></div>
+  <div class="dot"        data-target="slide-010" title="Selenophone, 1933"></div>
+  <div class="dot"        data-target="slide-011" title="Christopher Stone, 1933"></div>
+  <div class="dot"        data-target="slide-012" title="Paul Whiteman, 1929"></div>
+  <div class="dot"        data-target="coda"      title="Explorar más"></div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     HERO
+══════════════════════════════════════════ -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-gradient"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow reveal">Itinerario 5 · Exposición Ondas</p>
+    <h1 class="hero-title reveal reveal-delay-1">
+      Inventar<br>la <em>escucha</em>
+    </h1>
+    <p class="hero-subtitle reveal reveal-delay-2">
+      Del Pianorad al Theremin, del radio-barco al cochecito con antena:
+      la revista Ondas documenta la fiebre tecnológica de los primeros años de la radio.
+    </p>
+    <div class="hero-meta reveal reveal-delay-3">
+      <span>1925 — 1933</span>
+      <span>·</span>
+      <span>Revista Ondas</span>
+      <span>·</span>
+      <span>12 imágenes</span>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <div class="scroll-arrow"></div>
+    <span>Desplaza</span>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     000 — INTRO
+══════════════════════════════════════════ -->
+<section id="intro">
+  <div class="intro-inner">
+    <div class="intro-image-col">
+      <img src="images/000.webp" alt="Estudio de Radio Barcelona con retransmisión de música mecánica, 1935">
+      <div class="intro-image-overlay"></div>
+    </div>
+    <div class="intro-text-col">
+      <p class="section-number reveal">000</p>
+      <p class="section-label reveal reveal-delay-1">Inventar la escucha</p>
+      <h2 class="section-heading reveal reveal-delay-2">
+        Una extraordinaria<br>fiebre tecnológica
+      </h2>
+      <span class="gold-line reveal reveal-delay-2"></span>
+      <div class="section-body reveal reveal-delay-3">
+        <p>
+          La radio, en sus primeros años, no solo transformó la escucha: también desató
+          una extraordinaria fiebre tecnológica. La revista <em>Ondas</em> documenta una
+          sucesión de aparatos, prototipos y curiosidades que buscaban nuevas formas de
+          crear, reproducir y escuchar música.
+        </p>
+        <p>
+          Desde instrumentos electrónicos que anticipaban el futuro hasta radios instaladas
+          en los lugares más insospechados, este itinerario recorre el lado más imaginativo
+          y experimental de aquella revolución sonora.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     001 — Pianorad (1925)
+══════════════════════════════════════════ -->
+<section id="slide-001" class="slide">
+  <div class="slide-inner layout-a">
+    <div class="slide-image">
+      <img src="images/001.webp" alt="Pianorad, primer instrumento musical electrónico documentado en Ondas, 1925">
+      <div class="slide-image-vignette"></div>
+    </div>
+    <div class="slide-text">
+      <p class="slide-num reveal">001</p>
+      <p class="slide-date reveal">23 de enero de 1925</p>
+      <h2 class="slide-title reveal reveal-delay-1">Pianorad</h2>
+      <span class="gold-line reveal reveal-delay-1"></span>
+      <div class="slide-body reveal reveal-delay-2">
+        <p>
+          Uno de los primeros instrumentos musicales electrónicos documentados en <em>Ondas</em>:
+          el Pianorad, presentado en la estación WRNY de Nueva York. Un teclado de 25 teclas
+          que generaba sonido mediante válvulas de vacío, sin cuerdas ni martillos,
+          produciendo un timbre completamente nuevo.
+        </p>
+        <p>
+          La radio no solo retransmitía música; empezaba también a inventar nuevas
+          maneras de producirla.
+        </p>
+      </div>
+      <div class="slide-caption reveal reveal-delay-3">
+        <div class="slide-caption-text">Pianorad, estación WRNY, Nueva York · <em>Ondas</em>, 23 ene. 1925</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     002 — Piano-impresor y fonógrafo-registrador (1925)
+══════════════════════════════════════════ -->
+<section id="slide-002" class="slide">
+  <div class="slide-inner layout-b">
+    <div class="slide-image">
+      <img src="images/002.webp" alt="Mitt Hagen con piano-impresor, fonógrafo-registrador y máquina de escribir música, 1925">
+      <div class="slide-image-vignette"></div>
+    </div>
+    <div class="slide-text">
+      <p class="slide-num reveal">002</p>
+      <p class="slide-date reveal">1 de junio de 1925</p>
+      <h2 class="slide-title reveal reveal-delay-1">Piano-impresor y fonógrafo-registrador</h2>
+      <span class="gold-line reveal reveal-delay-1"></span>
+      <div class="slide-body reveal reveal-delay-2">
+        <p>
+          El compositor Mitt Hagen rodeado de un arsenal tecnológico: piano-impresor,
+          fonógrafo-registrador y máquina de escribir música, todo al mismo tiempo. El pie
+          de foto, con tono entre admirado e irónico, señala que compone «fox-trots, shimmys,
+          blues y otras maravillas».
+        </p>
+        <p>
+          La imagen muestra cómo la tecnología ya permitía imaginar un proceso creativo
+          completamente mecanizado: escuchar, componer, registrar e imprimir desde una misma
+          mesa de trabajo. Un estudio de grabación en miniatura décadas antes de que el
+          concepto existiera.
+        </p>
+      </div>
+      <div class="slide-caption reveal reveal-delay-3">
+        <div class="slide-caption-text">Mitt Hagen, compositor · <em>Ondas</em>, 1 jun. 1925</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     003 — Máquina automática (1926)
+══════════════════════════════════════════ -->
+<section id="slide-003" class="slide">
+  <div class="slide-inner layout-a">
+    <div class="slide-image">
+      <img src="images/003.webp" alt="Máquina automática de radio en barbería de Filadelfia, 1926">
+      <div class="slide-image-vignette"></div>
+    </div>
+    <div class="slide-text">
+      <p class="slide-num reveal">003</p>
+      <p class="slide-date reveal">14 de marzo de 1926</p>
+      <h2 class="slide-title reveal reveal-delay-1">Máquina automática para escuchar conciertos</h2>
+      <span class="gold-line reveal reveal-delay-1"></span>
+      <div class="slide-body reveal reveal-delay-2">
+        <p>
+          En una barbería de Filadelfia, una máquina automática de radio permite escuchar
+          un concierto a cambio de una moneda de diez céntimos. El aparato, imponente y con
+          toda su maquinaria a la vista, convive con el barbero y sus clientes como un
+          elemento más del establecimiento.
+        </p>
+        <p>
+          Antecedente directo de la gramola o <em>jukebox</em>, pero aquí lo que se escucha
+          no es un disco sino la radio en directo. La escucha musical se convierte en un
+          servicio de pago al alcance de cualquiera.
+        </p>
+      </div>
+      <div class="slide-caption reveal reveal-delay-3">
+        <div class="slide-caption-text">Barbería de Filadelfia · <em>Ondas</em>, 14 mar. 1926</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     004 — Radio-barco (1926)
+══════════════════════════════════════════ -->
+<section id="slide-004" class="slide">
+  <div class="slide-inner layout-b">
+    <div class="slide-image">
+      <img src="images/004.webp" alt="Anny Fobka con su aparato de radio con forma de barco, Nueva York, 1926">
+      <div class="slide-image-vignette"></div>
+    </div>
+    <div class="slide-text">
+      <p class="slide-num reveal">004</p>
+      <p class="slide-date reveal">21 de marzo de 1926</p>
+      <h2 class="slide-title reveal reveal-delay-1">Radio-barco: escuchando un concierto</h2>
+      <span class="gold-line reveal reveal-delay-1"></span>
+      <div class="slide-body reveal reveal-delay-2">
+        <p>
+          La artista Anny Fobka escucha un concierto a través de su original aparato de
+          radio con forma de barco, presentado en una Exposición de Nueva York. Los diales
+          y componentes electrónicos se integran en el casco de la embarcación, mientras
+          pequeñas figuras asoman como pasajeros.
+        </p>
+        <p>
+          Una imagen que revela el espíritu lúdico de aquellos años: la radio no era solo
+          un objeto funcional, sino también un espacio para la fantasía y el diseño.
+        </p>
+      </div>
+      <div class="slide-caption reveal reveal-delay-3">
+        <div class="slide-caption-text">Anny Fobka, Exposición de Nueva York · <em>Ondas</em>, 21 mar. 1926</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     005 — Fuente-altavoz (1926)
+══════════════════════════════════════════ -->
+<section id="slide-005" class="slide">
+  <div class="slide-inner layout-a">
+    <div class="slide-image">
+      <img src="images/005.webp" alt="Fuente-altavoz en la Exposición Mundial de Radio de Nueva York, 1926">
+      <div class="slide-image-vignette"></div>
+    </div>
+    <div class="slide-text">
+      <p class="slide-num reveal">005</p>
+      <p class="slide-date reveal">28 de noviembre de 1926</p>
+      <h2 class="slide-title reveal reveal-delay-1">Fuente-altavoz</h2>
+      <span class="gold-line reveal reveal-delay-1"></span>
+      <div class="slide-body reveal reveal-delay-2">
+        <p>
+          En la Exposición Mundial de Radio de Nueva York, dos mujeres observan con curiosidad
+          una «fuente-altavoz»: un aparato que combina una fuente ornamental con un altavoz,
+          de modo que el agua y el sonido brotan del mismo objeto.
+        </p>
+        <p>
+          La pieza, con su base labrada y sus lámparas decorativas, parece más un elemento de
+          salón burgués que un aparato tecnológico. Esta fusión entre lo decorativo y lo
+          funcional muestra hasta qué punto la industria buscaba integrar la radio en el
+          hogar, disfrazándola de objeto artístico.
+        </p>
+      </div>
+      <div class="slide-caption reveal reveal-delay-3">
+        <div class="slide-caption-text">Exposición Mundial de Radio, Nueva York · <em>Ondas</em>, 28 nov. 1926</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     006 — El tono del violín (1927)
+══════════════════════════════════════════ -->
+<section id="slide-006" class="slide">
+  <div class="slide-inner layout-b">
+    <div class="slide-image">
+      <img src="images/006.webp" alt="Diagrama técnico para instalar micrófono en un violín, 1927">
+      <div class="slide-image-vignette"></div>
+    </div>
+    <div class="slide-text">
+      <p class="slide-num reveal">006</p>
+      <p class="slide-date reveal">10 de julio de 1927</p>
+      <h2 class="slide-title reveal reveal-delay-1">El tono del violín</h2>
+      <span class="gold-line reveal reveal-delay-1"></span>
+      <div class="slide-body reveal reveal-delay-2">
+        <p>
+          Este diagrama técnico publicado en <em>Ondas</em> explica cómo instalar un
+          micrófono en el interior de un violín para amplificar eléctricamente su sonido.
+          Las figuras muestran el botón del micrófono, el transformador de modulación,
+          las arandelas de sujeción y las conexiones con el amplificador.
+        </p>
+        <p>
+          Es uno de los primeros intentos documentados de electrificar un instrumento de
+          cuerda, décadas antes de que la amplificación se convirtiera en norma. Para los
+          lectores de <em>Ondas</em>, no bastaba con escuchar: había que saber cómo
+          funcionaba todo.
+        </p>
+      </div>
+      <div class="slide-caption reveal reveal-delay-3">
+        <div class="slide-caption-text">Artículo técnico sobre electrificación del violín · <em>Ondas</em>, 10 jul. 1927</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     007 — Theremin (1929)
+══════════════════════════════════════════ -->
+<section id="slide-007" class="slide">
+  <div class="slide-inner layout-a">
+    <div class="slide-image">
+      <img src="images/007.webp" alt="Lev Theremin tocando su instrumento, 1929">
+      <div class="slide-image-vignette"></div>
+    </div>
+    <div class="slide-text">
+      <p class="slide-num reveal">007</p>
+      <p class="slide-date reveal">3 de agosto de 1929</p>
+      <h2 class="slide-title reveal reveal-delay-1">Theremin</h2>
+      <span class="gold-line reveal reveal-delay-1"></span>
+      <div class="slide-body reveal reveal-delay-2">
+        <p>
+          El ingeniero ruso Lev Theremin, fotografiado produciendo «música etérea con su
+          original aparato», según el pie de foto de <em>Ondas</em>. La imagen muestra al
+          inventor con las manos suspendidas en el aire, controlando el sonido sin contacto
+          físico con el instrumento, junto a un enorme altavoz.
+        </p>
+        <p>
+          El artículo que acompaña a la imagen documenta también un órgano eléctrico y
+          planos técnicos del funcionamiento del aparato. La revista no se limitaba a la
+          noticia: quería que el lector entendiera la tecnología.
+        </p>
+      </div>
+      <div class="slide-caption reveal reveal-delay-3">
+        <div class="slide-caption-text">Lev Theremin con su instrumento · <em>Ondas</em>, 3 ago. 1929</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     008 — Radio en el cochecito (1930)
+══════════════════════════════════════════ -->
+<section id="slide-008" class="slide">
+  <div class="slide-inner layout-b">
+    <div class="slide-image">
+      <img src="images/008.webp" alt="Bebé con aparato de T.S.H. instalado en su cochecito de mimbre, 1930">
+      <div class="slide-image-vignette"></div>
+    </div>
+    <div class="slide-text">
+      <p class="slide-num reveal">008</p>
+      <p class="slide-date reveal">27 de septiembre de 1930</p>
+      <h2 class="slide-title reveal reveal-delay-1">Radio en el cochecito</h2>
+      <span class="gold-line reveal reveal-delay-1"></span>
+      <div class="slide-body reveal reveal-delay-2">
+        <p>
+          Un bebé «enreda», según el delicioso verbo del pie de foto original, con los mandos
+          de un aparato de T.S.H. instalado en su cochecito de mimbre. La fotografía funciona
+          a varios niveles: imagen costumbrista, demostración de que la radio estaba ya en
+          todas partes, y metáfora involuntaria de una generación que nacería con la radio
+          como compañera natural.
+        </p>
+        <p>
+          Estos niños serían los primeros oyentes para los que la escucha radiofónica
+          no fue una novedad, sino algo tan cotidiano como el propio cochecito.
+        </p>
+      </div>
+      <div class="slide-caption reveal reveal-delay-3">
+        <div class="slide-caption-text">Bebé con radio T.S.H. · <em>Ondas</em>, 27 sep. 1930</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     009 — Radio en el automóvil (1930)
+══════════════════════════════════════════ -->
+<section id="slide-009" class="slide">
+  <div class="slide-inner layout-a">
+    <div class="slide-image">
+      <img src="images/009.webp" alt="Excursionistas escuchando acordes de radio en el interior del coche, 1930">
+      <div class="slide-image-vignette"></div>
+    </div>
+    <div class="slide-text">
+      <p class="slide-num reveal">009</p>
+      <p class="slide-date reveal">15 de noviembre de 1930</p>
+      <h2 class="slide-title reveal reveal-delay-1">Radio en el automóvil</h2>
+      <span class="gold-line reveal reveal-delay-1"></span>
+      <div class="slide-body reveal reveal-delay-2">
+        <p>
+          «La radio es elemento indispensable en toda clase de viajes», afirma el pie de
+          foto de <em>Ondas</em>. Unos excursionistas entretienen las incidencias de la
+          marcha «con los acordes que les transmite el aparato colocado en el interior
+          del coche». La palabra «acordes» revela que lo que se escucha es música.
+        </p>
+        <p>
+          La autoradio, tan natural hoy, aparece aquí en sus inicios como una curiosidad
+          más, propia de esa fiebre por llevar la escucha musical a todos los rincones
+          de la vida cotidiana.
+        </p>
+      </div>
+      <div class="slide-caption reveal reveal-delay-3">
+        <div class="slide-caption-text">Radio en el automóvil · <em>Ondas</em>, 15 nov. 1930</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     010 — Selenophone (1933)
+══════════════════════════════════════════ -->
+<section id="slide-010" class="slide">
+  <div class="slide-inner layout-b">
+    <div class="slide-image">
+      <img src="images/010.webp" alt="El aparato Selenophone, 1933">
+      <div class="slide-image-vignette"></div>
+    </div>
+    <div class="slide-text">
+      <p class="slide-num reveal">010</p>
+      <p class="slide-date reveal">27 de mayo de 1933</p>
+      <h2 class="slide-title reveal reveal-delay-1">Selenophone</h2>
+      <span class="gold-line reveal reveal-delay-1"></span>
+      <div class="slide-body reveal reveal-delay-2">
+        <p>
+          El Selenophone era un sistema portátil de grabación y reproducción de sonido
+          sobre película, basado en el principio fotoeléctrico del selenio. Compacto y
+          transportable, representaba una alternativa al disco de pizarra para el registro
+          sonoro.
+        </p>
+        <p>
+          <em>Ondas</em> lo presenta con la escueta leyenda «El aparato Selenophone», pero
+          su presencia en la revista revela el interés constante de la publicación por
+          documentar cada nuevo avance en la tecnología musical, por minoritario o
+          efímero que resultara.
+        </p>
+      </div>
+      <div class="slide-caption reveal reveal-delay-3">
+        <div class="slide-caption-text">Selenophone · <em>Ondas</em>, 27 may. 1933</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     011 — Christopher Stone (1933)
+══════════════════════════════════════════ -->
+<section id="slide-011" class="slide">
+  <div class="slide-inner layout-a">
+    <div class="slide-image">
+      <img src="images/011.webp" alt="Christopher Stone en la emisora central de Londres durante una emisión de discos, 1933">
+      <div class="slide-image-vignette"></div>
+    </div>
+    <div class="slide-text">
+      <p class="slide-num reveal">011</p>
+      <p class="slide-date reveal">14 de octubre de 1933</p>
+      <h2 class="slide-title reveal reveal-delay-1">Emisión de discos desde la emisora central de Londres</h2>
+      <span class="gold-line reveal reveal-delay-1"></span>
+      <div class="slide-body reveal reveal-delay-2">
+        <p>
+          Christopher Stone, considerado uno de los primeros <em>disc jockeys</em> de la
+          historia, aparece en la emisora central de Londres durante una emisión de discos,
+          examinando un disco con atención profesional junto a un gramófono de emisión.
+        </p>
+        <p>
+          Con esta fotografía, <em>Ondas</em> documenta un cambio fundamental: el paso de
+          la música en directo a la música grabada como base de la programación. El disco
+          comenzaba a sustituir a la orquesta en el estudio, transformando para siempre
+          la relación entre radio y música.
+        </p>
+      </div>
+      <div class="slide-caption reveal reveal-delay-3">
+        <div class="slide-caption-text">Christopher Stone, BBC Londres · <em>Ondas</em>, 14 oct. 1933</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     012 — Paul Whiteman y el Jazzodyne (1929)
+══════════════════════════════════════════ -->
+<section id="slide-012" class="slide">
+  <div class="slide-inner layout-b">
+    <div class="slide-image">
+      <img src="images/012.webp" alt="Paul Whiteman, el rey del jazz, con su Jazzodyne casero, 1929">
+      <div class="slide-image-vignette"></div>
+    </div>
+    <div class="slide-text">
+      <p class="slide-num reveal">012</p>
+      <p class="slide-date reveal">6 de abril de 1929</p>
+      <h2 class="slide-title reveal reveal-delay-1">Paul Whiteman y el Jazzodyne</h2>
+      <span class="gold-line reveal reveal-delay-1"></span>
+      <div class="slide-body reveal reveal-delay-2">
+        <p>
+          Paul Whiteman, presentado por <em>Ondas</em> como «el rey del jazz», posa con
+          el aparato de radio que él mismo ha construido y bautizado como «Jazzodyne».
+          Fabricado con latas de conserva, cables y piezas sueltas, Whiteman planeaba
+          presentarlo en la sección de aficionados de la Exposición de Radio en el
+          Madison Square Garden.
+        </p>
+        <p>
+          El rey del jazz convertido en radioaficionado casero. Si algo resume este
+          itinerario es esto: la radio, en sus primeros años, era un territorio de
+          experimentación donde músicos, ingenieros e inventores compartían la misma
+          emoción ante una tecnología que estaba cambiando para siempre la manera de
+          vivir la música.
+        </p>
+      </div>
+      <div class="slide-caption reveal reveal-delay-3">
+        <div class="slide-caption-text">Paul Whiteman con su Jazzodyne · <em>Ondas</em>, 6 abr. 1929</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     CODA
+══════════════════════════════════════════ -->
+<section id="coda">
+  <div class="coda-inner">
+    <div class="coda-icon reveal">◈</div>
+    <h2 class="coda-title reveal reveal-delay-1">
+      Sigue explorando<br>inventos y curiosidades
+    </h2>
+    <p class="coda-body reveal reveal-delay-2">
+      Explora más aparatos y curiosidades tecnológicas en nuestro repositorio. Y si visitas
+      nuestra exposición itinerante física, podrás además descubrir otros aparatos musicales
+      como el <strong>Trautonium</strong>, construido a partir del plano de la revista
+      <em>Blanco y Negro</em>, coetánea de <em>Ondas</em>.
+    </p>
+    <a href="https://leximususal.github.io/MUSLYME/exposicion_ondas_index.html"
+       class="coda-link reveal reveal-delay-3" target="_blank" rel="noopener">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M8 2.5l5 5.5-5 5.5M3 8h10"/>
+      </svg>
+      Explorar el repositorio
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-left">
+    <strong>LexiMus · Universidad de Salamanca</strong>
+    Léxico y ontología de la música en español<br>
+    PID2022-139589NB-C33
+  </div>
+  <div class="footer-right">
+    Fuente: Revista <em>Ondas</em>, Hemeroteca Nacional de España<br>
+    Itinerario 5 de 5 · Inventar la escucha: Aparatos y curiosidades
+  </div>
+</footer>
+
+<script>
+  const progressBar = document.getElementById('progress-bar');
+
+  function updateProgress() {
+    const pct = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+    progressBar.style.width = pct + '%';
+  }
+
+  const dots = document.querySelectorAll('.dot');
+  const sections = ['hero','intro','slide-001','slide-002','slide-003','slide-004',
+                    'slide-005','slide-006','slide-007','slide-008','slide-009',
+                    'slide-010','slide-011','slide-012','coda'];
+
+  dots.forEach(dot => {
+    dot.addEventListener('click', () => {
+      const el = document.getElementById(dot.dataset.target);
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
+  function updateActiveDot() {
+    const mid = window.scrollY + window.innerHeight * 0.4;
+    let active = 0;
+    sections.forEach((id, i) => {
+      const el = document.getElementById(id);
+      if (el && el.offsetTop <= mid) active = i;
+    });
+    dots.forEach((d, i) => d.classList.toggle('active', i === active));
+  }
+
+  const observer = new IntersectionObserver(
+    entries => entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+    }),
+    { threshold: 0.12 }
+  );
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  window.addEventListener('scroll', () => { updateProgress(); updateActiveDot(); }, { passive: true });
+  updateProgress();
+  updateActiveDot();
+
+  document.querySelectorAll('#hero .reveal').forEach((el, i) => {
+    setTimeout(() => el.classList.add('visible'), i * 180);
+  });
+</script>
+</body>
+</html>
